@@ -209,6 +209,24 @@ namespace MunicipalServiceApp.Presentation
 
         private async void btnSubmit_Click(object? sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtLocation.Text))
+            {
+                MessageBox.Show("Please enter a valid location.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (cmbCategory.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a category.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(rtbDescription.Text))
+            {
+                MessageBox.Show("Please provide a description of the issue.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             _isSubmitting = true;
 
             var startPct = prgEngagement.Value;
