@@ -1,0 +1,29 @@
+# Visual Studio and Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.csproj.user
+
+# Log files
+*.log
+*.log.*
+
+# Temporary files
+*.tmp
+*.swp
+
+# Packages
+packages/
+**/packages.config
+
+# Dotnet tools
+.store/
