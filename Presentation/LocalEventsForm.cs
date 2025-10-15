@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using MunicipalServiceApp.Domain;
+using MunicipalServiceApp.Presentation;
 
 namespace MunicipalServiceApp.Presentation
 {
@@ -23,34 +24,30 @@ namespace MunicipalServiceApp.Presentation
 
         private void LocalEventsForm_Load(object sender, EventArgs e)
         {
-            AddEvent(1, "Concert in the Park", "Music", new DateTime(2025, 11, 20), "Live music event.");
-            AddEvent(2, "Local Marathon", "Sports", new DateTime(2025, 11, 22), "Annual city marathon.");
-            AddEvent(3, "Farmers Market", "Community", new DateTime(2025, 11, 23), "Fresh local produce.");
-            AddEvent(4, "Art Exhibition", "Art", new DateTime(2025, 11, 25), "Showcasing local artists.");
-            AddEvent(5, "Tech Conference", "Technology", new DateTime(2025, 11, 27), "Latest in tech innovations.");
-            AddEvent(6, "Book Fair", "Literature", new DateTime(2025, 11, 29), "Explore new books and authors.");
-            AddEvent(7, "Food Festival", "Culinary", new DateTime(2025, 12, 1), "Taste dishes from around the world.");
-            AddEvent(8, "Charity Run", "Community", new DateTime(2025, 12, 3), "Run for a cause.");
-            AddEvent(9, "Jazz Night", "Music", new DateTime(2025, 12, 5), "Evening of smooth jazz.");
-            AddEvent(10, "Coding Bootcamp", "Education", new DateTime(2025, 12, 7), "Learn to code in a day.");
-            AddEvent(11, "Yoga Retreat", "Health", new DateTime(2025, 12, 9), "Relax and rejuvenate.");
-            AddEvent(12, "Photography Workshop", "Art", new DateTime(2025, 12, 11), "Improve your photography skills.");
-            AddEvent(13, "Startup Pitch Night", "Business", new DateTime(2025, 12, 13), "Showcase your startup ideas.");
-            AddEvent(14, "Holiday Parade", "Community", new DateTime(2025, 12, 15), "Celebrate the holiday season.");
-            AddEvent(15, "New Year's Gala", "Celebration", new DateTime(2025, 12, 31), "Ring in the new year in style.");
+            AddEvent(1, "Potholes in Benoni", "Roads", new DateTime(2025, 9, 12), "Pothole repairs in Benoni from 10:00 till 12:00");
+            AddEvent(2, "Water Maintenance in Benoni", "Utilities", new DateTime(2025, 10, 14), "Electricity maintenance in Benoni from 08:00 till 12:00");
+            AddEvent(3, "Garbage Collection Delayed", "Sanitation", new DateTime(2025, 9, 12), "Garbage collection in Roodepoort delayed to 12:00");
+            AddEvent(4, "Potholes in Braamfontein", "Roads", new DateTime(2025, 10, 11), "Road maintenance in Braamfontein from 09:00 till 15:00");
+            AddEvent(5, "No water in Sandton", "Utilities", new DateTime(2025, 10, 14), "Water outage in Sandton area");
 
-            // Populate listBoxEvents with event data
-            foreach (var eventItem in events.Values)
-            {
-                listBoxEvents.Items.Add($"{eventItem.Name} - {eventItem.Category} ({eventItem.Date.ToShortDateString()})");
-            }
+            // Populate events in ListBox
+            UpdateEventList(events.Values.ToList());
 
-            // Populate cmbSort with sorting options
-            cmbSort.Items.AddRange(new string[] { "Name", "Category", "Date" });
-            cmbSort.SelectedIndex = 0;
+            // Populate category options
+            categoryCombo.Items.AddRange(new string[] { "All Categories", "Roads", "Utilities", "Sanitation" });
+            categoryCombo.SelectedIndex = 0;
+
+            // Set default date
+            datePicker.Value = DateTime.Today;
+
+            // Hook up event handlers
+            txtSearch.TextChanged += TxtSearch_TextChanged;
+            categoryCombo.SelectedIndexChanged += CategoryCombo_SelectedIndexChanged;
+            btnSearch.Click += BtnSearch_Click;
 
             // Display recommendations
-            lblRecommendations.Text = "Recommended: Concert in the Park, Local Marathon";
+            var recommendedEvents = events.Values.OrderByDescending(ev => ev.Date).Take(3).ToList();
+            UpdateRecommendations(recommendedEvents);
         }
 
         private void AddEvent(int id, string name, string category, DateTime date, string description)
@@ -62,81 +59,85 @@ namespace MunicipalServiceApp.Presentation
 
         private void DisplayEvents(List<Event> eventsToDisplay)
         {
-            listBoxEvents.Items.Clear();
+            flpEvents.Controls.Clear();
+
             foreach (var ev in eventsToDisplay)
             {
-                listBoxEvents.Items.Add(ev);
+                var card = new EventCard();
+                card.Populate(ev);
+                flpEvents.Controls.Add(card);
             }
         }
 
-        private void UpdateRecommendations()
+        private void UpdateEventList(List<Event> eventList)
         {
-            if (searchFrequency.Count == 0) return;
+            flpEvents.Controls.Clear();
+            foreach (var ev in eventList)
+            {
+                var card = new EventCard();
+                card.Populate(ev);
+                flpEvents.Controls.Add(card);
+            }
+        }
 
-            // Find the most frequently searched category
-            string favoriteCategory = searchFrequency.OrderByDescending(kvp => kvp.Value).First().Key;
+        private void UpdateRecommendations(List<Event> recommendedEvents)
+        {
+            flpRecommendations.Controls.Clear();
 
-            var recommendedEvents = events.Values
-                .Where(ev => ev.Category == favoriteCategory)
-                .Take(3)
-                .ToList();
-
-            lblRecommendations.Text = "Recommended for you:\n";
             foreach (var ev in recommendedEvents)
             {
-                lblRecommendations.Text += $"- {ev.Name}\n";
+                var card = new EventCard();
+                card.Populate(ev);
+                flpRecommendations.Controls.Add(card);
             }
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void TxtSearch_TextChanged(object? sender, EventArgs e)
         {
             string searchTerm = txtSearch.Text.ToLower();
-            if (string.IsNullOrWhiteSpace(searchTerm))
-            {
-                DisplayEvents(events.Values.ToList()); // Show all if search is empty
-                return;
-            }
-
-            // Use LINQ to filter the events from the dictionary's values
-            var filteredEvents = events.Values
-                .Where(ev => ev.Category.ToLower().Contains(searchTerm) ||
-                             ev.Date.ToString("yyyy-MM-dd").Contains(searchTerm))
-                .ToList();
-
+            var filteredEvents = events.Values.Where(ev => ev.Name.ToLower().Contains(searchTerm) || ev.Category.ToLower().Contains(searchTerm)).ToList();
             DisplayEvents(filteredEvents);
+        }
 
-            // Check if the search term matches a known category, increment its frequency.
-            foreach (string category in eventCategories)
+        private void CategoryCombo_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            FilterAndDisplayEvents();
+        }
+
+        private void BtnSearch_Click(object? sender, EventArgs e)
+        {
+            FilterAndDisplayEvents();
+        }
+
+        private void FilterAndDisplayEvents()
+        {
+            var filteredEvents = events.Values.AsEnumerable();
+
+            // Apply category filter
+            if (categoryCombo.SelectedIndex > 0 && categoryCombo.SelectedItem != null) // Skip "All Categories"
             {
-                if (searchTerm.Contains(category.ToLower()))
+                string selectedCategory = categoryCombo.SelectedItem.ToString();
+                if (!string.IsNullOrEmpty(selectedCategory))
                 {
-                    if (!searchFrequency.ContainsKey(category))
-                    {
-                        searchFrequency[category] = 0;
-                    }
-                    searchFrequency[category]++;
-                    break; // Only count the first matched category per search
+                    filteredEvents = filteredEvents.Where(ev => ev.Category == selectedCategory);
                 }
             }
 
-            UpdateRecommendations();
-        }
+            // Apply date filter
+            var selectedDate = datePicker.Value.Date;
+            filteredEvents = filteredEvents.Where(ev => ev.Date.Date == selectedDate);
 
-        private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selection = cmbSort.SelectedItem.ToString();
-            List<Event> currentEvents = events.Values.ToList();
-
-            if (selection == "Sort by Date")
+            // Apply search text filter
+            if (!string.IsNullOrWhiteSpace(txtSearch.Text))
             {
-                currentEvents = currentEvents.OrderBy(ev => ev.Date).ToList();
-            }
-            else if (selection == "Sort by Name")
-            {
-                currentEvents = currentEvents.OrderBy(ev => ev.Name).ToList();
+                string searchTerm = txtSearch.Text.ToLower();
+                filteredEvents = filteredEvents.Where(ev => 
+                    ev.Name.ToLower().Contains(searchTerm) || 
+                    ev.Description.ToLower().Contains(searchTerm));
             }
 
-            DisplayEvents(currentEvents); // Re-display the sorted list
+            // Display filtered events
+            DisplayEvents(filteredEvents.OrderByDescending(ev => ev.Date).ToList());
         }
 
         private void btnBackToMainMenu_Click(object sender, EventArgs e)

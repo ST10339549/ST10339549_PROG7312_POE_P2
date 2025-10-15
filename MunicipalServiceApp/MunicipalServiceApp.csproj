@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="..\Presentation\LocalEventsForm.cs" />
     <Compile Include="..\Presentation\LocalEventsForm.Designer.cs" />
+    <Compile Include="..\Presentation\EventCard.cs" />
+    <Compile Include="..\Presentation\EventCard.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

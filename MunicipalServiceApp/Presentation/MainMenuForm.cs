@@ -56,10 +56,8 @@ namespace MunicipalServiceApp.Presentation
         {
             if (pnlMenu == null || header == null) return;
 
-            // center horizontally
             pnlMenu.Left = Math.Max(0, (ClientSize.Width - pnlMenu.Width) / 2);
 
-            // keep a nice top margin below the header; never negative
             var desiredTop = header.Bottom + 16;
             pnlMenu.Top = Math.Max(desiredTop, (ClientSize.Height - pnlMenu.Height) / 2);
         }

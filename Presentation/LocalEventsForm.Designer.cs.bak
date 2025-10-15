@@ -1,0 +1,356 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace MunicipalServiceApp.Presentation
+{
+    partial class LocalEventsForm
+    {
+        private System.ComponentModel.IContainer components = null;
+        private FlowLayoutPanel flpEvents;
+        private FlowLayoutPanel flpRecommendations;
+        private TextBox txtSearch;
+        private Button btnSearch;
+        private ComboBox categoryCombo;
+        private DateTimePicker datePicker;
+        private Label lblRecommendations;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+
+            // Initialize components
+            this.flpEvents = new FlowLayoutPanel();
+            this.flpRecommendations = new FlowLayoutPanel();
+            this.txtSearch = new TextBox();
+            this.btnSearch = new Button();
+            this.categoryCombo = new ComboBox();
+            this.datePicker = new DateTimePicker();
+            this.lblRecommendations = new Label();
+
+            // Form setup
+            this.Text = "Local Events and Announcements";
+            this.Size = new Size(1200, 800);
+            this.MinimumSize = new Size(1200, 800);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.White;
+
+            // Search panel
+            var searchPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 100,
+                BackColor = Color.White,
+                Padding = new Padding(20)
+            };
+
+            // Search label
+            var lblSearch = new Label
+            {
+                Text = "Search Events & Announcements",
+                Font = new Font("Segoe UI", 14),
+                Location = new Point(20, 20),
+                AutoSize = true
+            };
+
+            // Search controls
+            this.txtSearch.Size = new Size(300, 30);
+            this.txtSearch.Font = new Font("Segoe UI", 12);
+            this.txtSearch.PlaceholderText = "Search events or announcements...";
+
+            this.categoryCombo.Size = new Size(200, 30);
+            this.categoryCombo.Font = new Font("Segoe UI", 12);
+            this.categoryCombo.Text = "All Categories";
+            this.categoryCombo.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            this.datePicker.Size = new Size(200, 30);
+            this.datePicker.Font = new Font("Segoe UI", 12);
+            this.datePicker.Format = DateTimePickerFormat.Short;
+
+            // Search layout
+            var searchLayout = new FlowLayoutPanel
+            {
+                Location = new Point(20, 50),
+                Size = new Size(1100, 40),
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false
+            };
+
+            // Add controls to search layout
+            searchLayout.Controls.AddRange(new Control[] { 
+                this.txtSearch, 
+                this.categoryCombo, 
+                this.datePicker, 
+                this.btnSearch 
+            });
+
+            // Add to search panel
+            searchPanel.Controls.Add(lblSearch);
+            searchPanel.Controls.Add(searchLayout);
+
+            // Main content area
+            var contentPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(20),
+                BackColor = Color.White
+            };
+
+            // Events panel
+            this.flpEvents.Size = new Size(800, this.ClientSize.Height - searchPanel.Height - 40);
+            this.flpEvents.Location = new Point(20, 20);
+            this.flpEvents.AutoScroll = true;
+            this.flpEvents.FlowDirection = FlowDirection.TopDown;
+            this.flpEvents.WrapContents = false;
+
+            // Recommendations
+            var recPanel = new Panel
+            {
+                Size = new Size(300, this.ClientSize.Height - searchPanel.Height - 40),
+                Location = new Point(840, 20),
+                BackColor = Color.FromArgb(255, 252, 240)
+            };
+
+            this.lblRecommendations.Text = "⭐ Recommended for You";
+            this.lblRecommendations.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            this.lblRecommendations.Location = new Point(10, 10);
+            this.lblRecommendations.Size = new Size(280, 30);
+
+            this.flpRecommendations.Location = new Point(10, 50);
+            this.flpRecommendations.Size = new Size(280, recPanel.Height - 60);
+            this.flpRecommendations.AutoScroll = true;
+            this.flpRecommendations.FlowDirection = FlowDirection.TopDown;
+            this.flpRecommendations.WrapContents = false;
+
+            recPanel.Controls.Add(this.lblRecommendations);
+            recPanel.Controls.Add(this.flpRecommendations);
+
+            contentPanel.Controls.Add(this.flpEvents);
+            contentPanel.Controls.Add(recPanel);
+
+            // Add all to form
+            this.Controls.Add(searchPanel);
+            this.Controls.Add(contentPanel);
+
+            // Event handlers
+            this.Load += new EventHandler(LocalEventsForm_Load);
+            this.categoryCombo.Size = new Size(200, 30);
+            this.categoryCombo.Font = new Font("Segoe UI", 12);
+            this.categoryCombo.Text = "All Categories";
+            this.categoryCombo.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // Date Picker
+            this.datePicker = new DateTimePicker();
+            this.datePicker.Size = new Size(200, 30);
+            this.datePicker.Font = new Font("Segoe UI", 12);
+            this.datePicker.Format = DateTimePickerFormat.Short;
+
+            // Search Button
+            this.btnSearch = new Button();
+            this.btnSearch.Text = "Search";
+            this.btnSearch.Size = new Size(100, 30);
+            this.btnSearch.BackColor = Color.RoyalBlue;
+            this.btnSearch.ForeColor = Color.White;
+            this.btnSearch.FlatStyle = FlatStyle.Flat;
+
+            // Add search controls to layout
+            searchLayout.Controls.Add(this.txtSearch);
+            searchLayout.Controls.Add(this.categoryCombo);
+            searchLayout.Controls.Add(this.datePicker);
+            searchLayout.Controls.Add(this.btnSearch);
+            searchPanel.Controls.Add(searchLayout);
+
+            // Main container panel
+            var containerPanel = new Panel();
+            containerPanel.Dock = DockStyle.Fill;
+            containerPanel.AutoScroll = true;
+
+            // Main content panel
+            var mainContent = new Panel();
+            mainContent.Dock = DockStyle.Fill;
+            mainContent.Padding = new Padding(20);
+
+            // Add search panel to form
+            this.Controls.Add(searchPanel);
+
+            // Setup main content area
+            var contentPanel = new Panel();
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Location = new Point(0, searchPanel.Height);
+            contentPanel.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - searchPanel.Height);
+
+            // Setup events panel
+            this.flpEvents = new FlowLayoutPanel();
+            this.flpEvents.AutoScroll = true;
+            this.flpEvents.FlowDirection = FlowDirection.TopDown;
+            this.flpEvents.WrapContents = false;
+            this.flpEvents.Size = new Size(800, this.ClientSize.Height - searchPanel.Height - 40);
+            this.flpEvents.Location = new Point(20, 20);
+
+            // Create recommendations section
+            var recPanel = new Panel();
+            recPanel.Size = new Size(300, this.ClientSize.Height - searchPanel.Height - 40);
+            recPanel.Location = new Point(840, 20);
+            recPanel.BackColor = Color.FromArgb(255, 252, 240);
+
+            this.lblRecommendations = new Label();
+            this.lblRecommendations.Text = "⭐ Recommended for You";
+            this.lblRecommendations.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            this.lblRecommendations.Location = new Point(10, 10);
+            this.lblRecommendations.Size = new Size(280, 30);
+
+            this.flpRecommendations = new FlowLayoutPanel();
+            this.flpRecommendations.Location = new Point(10, 50);
+            this.flpRecommendations.Size = new Size(280, recPanel.Height - 60);
+            this.flpRecommendations.AutoScroll = true;
+            this.flpRecommendations.FlowDirection = FlowDirection.TopDown;
+            this.flpRecommendations.WrapContents = false;
+
+            recPanel.Controls.Add(this.lblRecommendations);
+            recPanel.Controls.Add(this.flpRecommendations);
+            
+            contentPanel.Controls.Add(recPanel);
+
+            contentPanel.Controls.Add(this.flpEvents);
+            contentPanel.Controls.Add(this.recommendationsPanel);
+
+            // Add search layout to search panel
+            searchLayout.Controls.Add(this.txtSearch);
+            searchLayout.Controls.Add(this.categoryCombo);
+            searchLayout.Controls.Add(this.datePicker);
+            searchLayout.Controls.Add(this.btnSearch);
+            searchPanel.Controls.Add(searchLayout);
+
+            // Create main content area
+            this.mainPanel = new Panel();
+            this.mainPanel.Dock = DockStyle.Fill;
+            this.mainPanel.BackColor = Color.White;
+            this.mainPanel.Padding = new Padding(20);
+
+            // Add controls to form
+            this.Controls.Add(searchPanel);
+            this.Controls.Add(this.mainPanel);
+
+            // Add events and recommendations panels to main panel
+            this.mainPanel.Controls.Add(this.flpEvents);
+            this.mainPanel.Controls.Add(recPanel);
+
+            // Set form properties
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1200, 800);
+            this.MinimumSize = new System.Drawing.Size(1200, 800);
+            this.Name = "LocalEventsForm";
+            this.Text = "Local Events and Announcements";
+            this.Load += new System.EventHandler(this.LocalEventsForm_Load);
+            this.ResumeLayout(false);
+
+            // Events Panel
+            this.flpEvents = new FlowLayoutPanel();
+            this.flpEvents.AutoScroll = true;
+            this.flpEvents.FlowDirection = FlowDirection.TopDown;
+            this.flpEvents.WrapContents = false;
+            this.flpEvents.Size = new Size(800, 600);
+            this.flpEvents.Location = new Point(20, 20);
+            this.flpEvents.BorderStyle = BorderStyle.None;
+
+            // Recommendations Panel
+            this.recommendationsPanel = new Panel();
+            this.recommendationsPanel.Size = new Size(300, 600);
+            this.recommendationsPanel.Location = new Point(840, 20);
+            this.recommendationsPanel.BackColor = Color.FromArgb(255, 252, 240);
+
+            // Recommendations Label
+            this.lblRecommendations = new Label();
+            this.lblRecommendations.Text = "⭐ Recommended for You";
+            this.lblRecommendations.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            this.lblRecommendations.Location = new Point(10, 10);
+            this.lblRecommendations.Size = new Size(280, 30);
+
+            // Recommendations FlowLayout
+            this.flpRecommendations = new FlowLayoutPanel();
+            this.flpRecommendations.Location = new Point(10, 50);
+            this.flpRecommendations.Size = new Size(280, 540);
+            this.flpRecommendations.AutoScroll = true;
+            this.flpRecommendations.FlowDirection = FlowDirection.TopDown;
+            this.flpRecommendations.WrapContents = false;
+
+            recommendationsPanel.Controls.Add(this.lblRecommendations);
+            recommendationsPanel.Controls.Add(this.flpRecommendations);
+
+            mainContent.Controls.Add(this.flpEvents);
+            mainContent.Controls.Add(recommendationsPanel);
+
+            // Add all panels to form
+            this.Controls.Add(searchPanel);
+            this.Controls.Add(mainContent);
+
+            var txtSearch = new TextBox();
+            txtSearch.PlaceholderText = "Search events...";
+            txtSearch.Dock = DockStyle.Top;
+
+            var cmbCategories = new ComboBox();
+            cmbCategories.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCategories.Dock = DockStyle.Top;
+            cmbCategories.Items.AddRange(new string[] { "All Categories", "Roads", "Utilities", "Sanitation" });
+
+            var dtPicker = new DateTimePicker();
+            dtPicker.Format = DateTimePickerFormat.Short;
+            dtPicker.Dock = DockStyle.Top;
+
+            var btnSearch = new Button();
+            btnSearch.Text = "Search";
+            btnSearch.Dock = DockStyle.Top;
+
+            searchPanel.Controls.Add(lblSearch);
+            searchPanel.Controls.Add(txtSearch);
+            searchPanel.Controls.Add(cmbCategories);
+            searchPanel.Controls.Add(dtPicker);
+            searchPanel.Controls.Add(btnSearch);
+
+            // Events and Announcements Section
+            var eventsPanel = new FlowLayoutPanel();
+            eventsPanel.Dock = DockStyle.Fill;
+            eventsPanel.AutoScroll = true;
+            eventsPanel.WrapContents = true;
+            eventsPanel.FlowDirection = FlowDirection.LeftToRight;
+            eventsPanel.Padding = new Padding(10);
+
+            // Recommended for You Section
+            var recommendationsPanel = new Panel();
+            recommendationsPanel.Dock = DockStyle.Right;
+            recommendationsPanel.Width = 300;
+            recommendationsPanel.Padding = new Padding(10);
+
+            var lblRecommendations = new Label();
+            lblRecommendations.Text = "Recommended for You";
+            lblRecommendations.Font = new Font("Arial", 12, FontStyle.Bold);
+            lblRecommendations.Dock = DockStyle.Top;
+
+            recommendationsPanel.Controls.Add(lblRecommendations);
+
+            // Add panels to TableLayoutPanel
+            this.tableLayoutPanel.Controls.Add(searchPanel, 0, 0);
+            this.tableLayoutPanel.SetColumnSpan(searchPanel, 2);
+            this.tableLayoutPanel.Controls.Add(eventsPanel, 0, 1);
+            this.tableLayoutPanel.Controls.Add(recommendationsPanel, 1, 1);
+
+            // LocalEventsForm
+            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.tableLayoutPanel);
+            this.Text = "Local Events and Announcements";
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.WindowState = FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.LocalEventsForm_Load);
+        }
+    }
+}
