@@ -94,7 +94,26 @@ namespace MunicipalServiceApp.Presentation
         {
             flpRecommendations.Controls.Clear();
 
-            foreach (var ev in recommendedEvents)
+            List<Event> recommendationsToShow;
+
+            if (searchFrequency.Count == 0)
+            {
+                // Default: show the 3 most recent events if no search history
+                recommendationsToShow = events.Values.OrderByDescending(ev => ev.Date).Take(3).ToList();
+            }
+            else
+            {
+                // Find the most frequently searched category
+                string favoriteCategory = searchFrequency.OrderByDescending(kvp => kvp.Value).First().Key;
+
+                // Recommend events from the favorite category, excluding already displayed events
+                recommendationsToShow = events.Values
+                    .Where(ev => ev.Category == favoriteCategory)
+                    .Take(3)
+                    .ToList();
+            }
+
+            foreach (var ev in recommendationsToShow)
             {
                 var card = new EventCard();
                 card.Populate(ev);
@@ -130,6 +149,16 @@ namespace MunicipalServiceApp.Presentation
                 if (!string.IsNullOrEmpty(selectedCategory))
                 {
                     filteredEvents = filteredEvents.Where(ev => ev.Category == selectedCategory);
+
+                    // Track search frequency for recommendations
+                    if (searchFrequency.ContainsKey(selectedCategory))
+                    {
+                        searchFrequency[selectedCategory]++;
+                    }
+                    else
+                    {
+                        searchFrequency[selectedCategory] = 1;
+                    }
                 }
             }
 
@@ -148,6 +177,9 @@ namespace MunicipalServiceApp.Presentation
 
             // Display filtered events
             DisplayEvents(filteredEvents.OrderByDescending(ev => ev.Date).ToList());
+
+            // Update recommendations based on current filters
+            UpdateRecommendations(null); // Pass null as the method now determines recommendations internally
         }
 
         private void btnBackToMainMenu_Click(object sender, EventArgs e)
