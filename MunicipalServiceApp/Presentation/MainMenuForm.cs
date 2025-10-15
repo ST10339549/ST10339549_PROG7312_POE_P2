@@ -1,4 +1,5 @@
 ﻿using MunicipalServiceApp.Application.Abstractions;
+using MunicipalServiceApp.Presentation;
 using System;
 using System.Windows.Forms;
 
@@ -47,6 +48,8 @@ namespace MunicipalServiceApp.Presentation
         {
             // initial center for first layout pass
             CenterMenu();
+
+            btnLocalEvents.Enabled = true;
         }
 
         private void CenterMenu()
@@ -79,7 +82,10 @@ namespace MunicipalServiceApp.Presentation
 
         private void btnLocalEvents_Click(object? sender, EventArgs e)
         {
-            // Disabled in Part 1
+            using var frm = new LocalEventsForm();
+            Hide();
+            frm.ShowDialog(this);
+            Show();
         }
 
         private void btnServiceStatus_Click(object? sender, EventArgs e)

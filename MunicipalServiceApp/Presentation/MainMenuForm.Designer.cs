@@ -14,6 +14,7 @@ namespace MunicipalServiceApp.Presentation
         private Label lblSub = null!;
         private Panel pnlMenu = null!;
         private Button btnOpenReport = null!;
+        private Button btnLocalEvents = null!;
 
         protected override void Dispose(bool disposing)
         {
@@ -176,10 +177,10 @@ namespace MunicipalServiceApp.Presentation
 
             var card2 = MakeCard(
                 "Local Events (Part 2)",
-                "Browse community events and announcements.\nComing soon.",
+                "Browse community events and announcements.",
                 SystemIcons.Asterisk,
-                (_, __) => { },
-                enabled: false);
+                btnLocalEvents_Click,
+                enabled: true);
 
             var card3 = MakeCard(
                 "Service Request Status (Part 3)",
@@ -205,6 +206,17 @@ namespace MunicipalServiceApp.Presentation
             MinimumSize = new Size(900, 560);
 
             // ... centering now handled in MainMenuForm.cs CenterMenu()
+
+            btnLocalEvents = new Button
+            {
+                Text = "Local Events",
+                Enabled = true,
+                Size = new Size(120, 40),
+                Location = new Point(20, 100),
+                BackColor = Color.LightBlue
+            };
+            btnLocalEvents.Click += btnLocalEvents_Click;
+            Controls.Add(btnLocalEvents);
         }
 
         private static class UiKit
