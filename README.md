@@ -125,7 +125,7 @@ Report Issues:
 Part 2 builds upon the application's foundation by introducing the Local Events and Announcements module. This feature provides a dynamic, user-friendly dashboard for residents to discover, search, and sort municipal activities, moving beyond static forms into a more interactive experience.
 
 ### 🎥 Part 2 YouTube Demo
-Here is a link to the Demo of the Part 2 features on YouTube: 
+Here is a link to the Demo of the Part 2 features on YouTube: https://youtu.be/geU8WFWdjCk.
 
 ### ✨ Feature Overview & UI
 The Events & Announcements screen provides a modern, responsive interface for browsing municipal notices.
@@ -165,3 +165,14 @@ As you perform different category searches, observe the "Recommended for You" se
 
 ## 🛣️ Roadmap for Part 3
 Part 3: Service Request Status (search by tracking number; timeline of updates).
+
+## 📸 Screenshots
+
+![Screenshot 1](screenshots/Screenshot1.png)
+![Screenshot 2](screenshots/Screenshot2.png)
+![Screenshot 3](screenshots/Screenshot3.png)
+![Screenshot 4](screenshots/Screenshot4.png)
+![Screenshot 5](screenshots/Screenshot5.png)
+![Screenshot 6](screenshots/Screenshot6.png)
+![Screenshot 7](screenshots/Screenshot7.png)
+![Screenshot 8](screenshots/Screenshot8.png)
