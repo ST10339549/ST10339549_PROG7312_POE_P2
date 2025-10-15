@@ -24,13 +24,13 @@ namespace MunicipalServiceApp.Presentation
 
         private void LocalEventsForm_Load(object sender, EventArgs e)
         {
-            AddEvent(1, "Potholes in Durban", "Roads", new DateTime(2025, 9, 12), "Pothole repairs in Durban from 10:00 till 12:00");
-            AddEvent(2, "Water Maintenance in Durban", "Utilities", new DateTime(2025, 10, 14), "Electricity maintenance in Durban from 08:00 till 12:00");
-            AddEvent(3, "Garbage Collection Delayed", "Sanitation", new DateTime(2025, 9, 12), "Garbage collection in Roodepoort delayed to 12:00");
-            AddEvent(4, "Potholes in Braamfontein", "Roads", new DateTime(2025, 10, 11), "Road maintenance in Braamfontein from 09:00 till 15:00");
-            AddEvent(5, "No water in Sandton", "Utilities", new DateTime(2025, 10, 14), "No water supply in Sandton from 13:00 till 17:00");
+            AddEvent(1, "Potholes in Durban", "Roads", new DateTime(2025, 9, 12), "Pothole repairs in Durban from 09:00 till 11:00");
+            AddEvent(2, "Water Maintenance in Durban", "Utilities", new DateTime(2025, 10, 14), "Electricity maintenance in Durban from 04:00 till 13:00");
+            AddEvent(3, "Potholes in Bluff", "Roads", new DateTime(2025, 10, 11), "Road maintenance in Bluff from 08:00 till 16:00");
+            AddEvent(4, "No water in Tongaat", "Utilities", new DateTime(2025, 10, 14), "No water supply in Tongaat from 13:00 till 21:00");
+            AddEvent(5, "Garbage Collection Delayed", "Sanitation", new DateTime(2025, 9, 12), "Garbage collection in Durban North delayed to 12:00");
             AddEvent(6, "Community Park Cleanup", "Community", new DateTime(2025, 10, 18), "Volunteer cleanup event at Central Park from 09:00.");
-            AddEvent(7, "Planned Power Outage: Hillcrest", "Utilities", new DateTime(2025, 10, 22), "Essential maintenance will cause a power outage from 10:00 to 16:00.");
+            AddEvent(7, "Planned Power Outage: Umglanga", "Utilities", new DateTime(2025, 10, 22), "Essential maintenance will cause a power outage from 15:00 to 16:00.");
             AddEvent(8, "New Traffic Light Installation", "Roads", new DateTime(2025, 10, 25), "Installation at the corner of Main and Broad street. Expect delays.");
             AddEvent(9, "Recycling Drive", "Sanitation", new DateTime(2025, 10, 28), "Special collection for recyclable materials. Please leave bins out by 07:00.");
             AddEvent(10, "Local Library Book Fair", "Events", new DateTime(2025, 11, 4), "Annual book fair to raise funds for the children's section.");
