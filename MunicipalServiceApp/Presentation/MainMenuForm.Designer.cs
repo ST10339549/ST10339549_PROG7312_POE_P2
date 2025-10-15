@@ -176,7 +176,7 @@ namespace MunicipalServiceApp.Presentation
                 enabled: true);
 
             var card2 = MakeCard(
-                "Local Events (Part 2)",
+                "Local Events",
                 "Browse community events and announcements.",
                 SystemIcons.Asterisk,
                 btnLocalEvents_Click,
